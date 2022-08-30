@@ -1,25 +1,33 @@
-var builder = WebApplication.CreateBuilder(args);
+using System.Text;
 
-// Add services to the container.
+namespace Timesheets.Presentation;
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+public class Program
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    private static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
+        .ConfigureAppConfiguration(
+            (hostingContext, builder) =>
+            {
+                builder
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.Development.json", false, true)
+                    .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true,
+                        true)
+                    .AddEnvironmentVariables();
+            })
+        .ConfigureWebHostDefaults(
+            webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+                webBuilder.UseUrls(new[] { "http://localhost:5000" });
+                webBuilder.ConfigureKestrel(
+                    options => { options.AddServerHeader = false; });
+            });
+
+    public static void Main(string[] args)
+    {
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+        CreateHostBuilder(args).Build().Run();
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
