@@ -14,6 +14,8 @@ public class Program
                     .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true,
                         true)
                     .AddEnvironmentVariables();
+                
+                builder.AddEnvironmentVariables();
             })
         .ConfigureWebHostDefaults(
             webBuilder =>

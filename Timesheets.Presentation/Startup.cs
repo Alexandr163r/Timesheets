@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using Timesheets.DAL;
+using Timesheets.DAL.Settings;
+
 namespace Timesheets.Presentation;
 
 public class Startup
@@ -12,6 +16,12 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.Configure<DBConnectionStringsOptions>(
+            Configuration.GetSection("ConnectionStrings"));
+        
+        services.AddDbContext<TimesheetsDbContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b=> b.MigrationsAssembly("Timesheets.DAL")));
+        
         services.AddControllers();
         
         services.AddEndpointsApiExplorer();
