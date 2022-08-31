@@ -1,6 +1,6 @@
 namespace Timesheets.Domain.Entities;
 
-public class TimeSheet : BaseId
+public abstract class TimeSheet : BaseId
 {
     public DateTime StartOfWorkDay { get; set; }
 

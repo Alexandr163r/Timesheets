@@ -1,6 +1,6 @@
 namespace Timesheets.Domain.Entities;
 
-public class Employee : BaseId
+public abstract class Employee : BaseId
 {
     public string Name { get; set; } = string.Empty;
 
