@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Timesheets.DAL;
+using Timesheets.DAL.Repositories;
 using Timesheets.DAL.Settings;
+using Timesheets.Domain.Interfaces;
 
 namespace Timesheets.Presentation;
 
@@ -16,6 +18,10 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddScoped<IEmployeeTypeRepository, IEmployeeTypeRepository>();
+        services.AddScoped<IEmployeeRepository, IEmployeeRepository>();
+        services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
+        
         services.Configure<DBConnectionStringsSetting>(
             Configuration.GetSection("DBConnectionStrings"));
         
