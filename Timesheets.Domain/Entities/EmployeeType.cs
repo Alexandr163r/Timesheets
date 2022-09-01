@@ -1,6 +1,7 @@
 namespace Timesheets.Domain.Entities;
 
-public abstract class EmployeeType : BaseId
+// ReSharper disable once ClassNeverInstantiated.Global
+public class EmployeeType : BaseId
 {
     public string Title { get; set; } = string.Empty;
 

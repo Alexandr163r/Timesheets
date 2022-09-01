@@ -1,6 +1,7 @@
 namespace Timesheets.Domain.Entities;
 
-public abstract class TimeSheet : BaseId
+// ReSharper disable once ClassNeverInstantiated.Global
+public class TimeSheet : BaseId
 {
     public DateTime StartOfWorkDay { get; set; }
 

@@ -1,24 +1,23 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using Timesheets.DAL.Settings;
 
 namespace Timesheets.DAL;
 
 public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<TimesheetsDbContext>
 {
-    //private readonly IOptions<DBConnectionStringsOptions> _setting;
-
-    // public DesignTimeDbContextFactory(IOptions<DBConnectionStringsOptions> setting)
-    //{
-      //  _setting = setting;
-      // }
-
-    public TimesheetsDbContext CreateDbContext(string[] args)
+    TimesheetsDbContext IDesignTimeDbContextFactory<TimesheetsDbContext>.CreateDbContext(string[] args)
     {
+        IConfigurationRoot configuration = new ConfigurationBuilder()
+            .SetBasePath(@"C:\GitHub\RiderProject\Timesheets\Timesheets.Presentation\")
+            .AddJsonFile("appsettings.Development.json")
+            .Build();
+
         var builder = new DbContextOptionsBuilder<TimesheetsDbContext>();
-        
-        builder.UseSqlServer("Server=ALEX\\SQLEXPRESS; Database=TimeSheets; User Id=dev; Password=123456; TrustServerCertificate=Yes;");       
+        var connectionString = configuration.GetSection("DBConnectionStrings")["MSSQLConnection"];
+
+        builder.UseSqlServer(connectionString);
 
         return new TimesheetsDbContext(builder.Options);
     }

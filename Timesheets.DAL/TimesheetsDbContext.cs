@@ -9,10 +9,27 @@ public class TimesheetsDbContext : DbContext
     {
     }
     
-    public DbSet<Employee>? Employee { get; set; } 
+    public DbSet<Employee> Employees { get; set; } 
 
-    public DbSet<EmployeeType>? EmployeeType { get; set; }
+    public DbSet<EmployeeType> EmployeeTypes { get; set; }
 
-    public DbSet<TimeSheet>? TimeSheet { get; set; }
+    public DbSet<TimeSheet> TimeSheets { get; set; }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Employee>()
+            .HasOne("Timesheets.Domain.Entities.EmployeeType", null)
+            .WithMany("Employees")
+            .HasForeignKey("EmployeeTypeId")
+            .OnDelete(DeleteBehavior.NoAction)
+            .IsRequired();
+        
+        modelBuilder.Entity<TimeSheet>()
+            .HasOne("Timesheets.Domain.Entities.Employee", null)
+            .WithMany("TimeSheets")
+            .HasForeignKey("EmployeeId")
+            .OnDelete(DeleteBehavior.NoAction)
+            .IsRequired();
+    }
 }
 

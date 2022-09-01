@@ -16,11 +16,11 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.Configure<DBConnectionStringsOptions>(
-            Configuration.GetSection("ConnectionStrings"));
+        services.Configure<DBConnectionStringsSetting>(
+            Configuration.GetSection("DBConnectionStrings"));
         
         services.AddDbContext<TimesheetsDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b=> b.MigrationsAssembly("Timesheets.DAL")));
+            options.UseSqlServer(Configuration.GetConnectionString("MSSQLConnection")));
         
         services.AddControllers();
         
