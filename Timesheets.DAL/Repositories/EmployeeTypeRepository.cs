@@ -12,7 +12,7 @@ public class EmployeeTypeRepository : IEmployeeTypeRepository
     {
         _dbContext = dbContext;
     }
-    
+
     public async Task<IEnumerable<EmployeeType>> GetAllAsync()
     {
         return await _dbContext.EmployeeTypes.AsQueryable().ToListAsync();
@@ -25,28 +25,16 @@ public class EmployeeTypeRepository : IEmployeeTypeRepository
         return employeeTypes;
     }
 
-    public async Task<bool> AddAsync(EmployeeType entity)
-    { 
-        await _dbContext.EmployeeTypes.AddAsync(entity);
+    public async Task<EmployeeType> AddAsync(EmployeeType employeeType)
+    {
+        var newEmployeeType = await _dbContext.EmployeeTypes.AddAsync(employeeType);
 
-        return true;
+        await _dbContext.SaveChangesAsync();
+
+        return newEmployeeType.Entity;
     }
 
     public async Task<bool> DeleteAsync(Guid id)
-    {
-        var entity = await _dbContext.EmployeeTypes.FindAsync(id);
-
-        if (entity == null)
-        {
-            return false;
-        }
-
-        _dbContext.EmployeeTypes.Remove(entity);
-
-        return true;
-    }
-
-    public async Task<bool> UpdateAsync(Guid id, EmployeeType entity)
     {
         var employeeType = await _dbContext.EmployeeTypes.FindAsync(id);
 
@@ -54,11 +42,61 @@ public class EmployeeTypeRepository : IEmployeeTypeRepository
         {
             return false;
         }
-        
-        employeeType.Title = entity.Title;
+
+        _dbContext.EmployeeTypes.Remove(employeeType);
 
         await _dbContext.SaveChangesAsync();
 
         return true;
+    }
+
+    public async Task<bool> UpdateAsync(Guid id, EmployeeType employeeType)
+    {
+        var newEmployeeType = await _dbContext.EmployeeTypes.FindAsync(id);
+
+        if (newEmployeeType == null)
+        {
+            return false;
+        }
+
+        newEmployeeType.Title = employeeType.Title;
+
+        await _dbContext.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<EmployeeType> GetEmployeeTypeByTitleAsync(string title)
+    {
+        var employeeType = await _dbContext.EmployeeTypes.FirstAsync(e => e.Title.ToLower() == title.ToLower());
+        
+        await _dbContext.SaveChangesAsync();
+
+        return employeeType;
+    }
+
+    public async Task<bool> AddEmployeeInListAsync(string title, Employee employee)
+    {
+        var employeeType = await _dbContext.EmployeeTypes.FirstAsync(e => e.Title.ToLower() == title.ToLower());
+
+        employeeType.Employees.Add(employee);
+
+        await _dbContext.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<bool> EmployeeTypeExistByTitleAsync(string title)
+    {
+        var existTitle = await _dbContext.EmployeeTypes.AnyAsync(e => e.Title == title);
+
+        return existTitle;
+    }
+    
+    public async Task<bool> EmployeeTypeExistByIdAsync(Guid id)
+    {
+        var existId = await _dbContext.EmployeeTypes.AnyAsync(e => e.Id == id);
+
+        return existId;
     }
 }
