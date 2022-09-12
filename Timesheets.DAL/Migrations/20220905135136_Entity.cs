@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Timesheets.DAL.Migrations
 {
-    public partial class EntityCreate : Migration
+    public partial class Entity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

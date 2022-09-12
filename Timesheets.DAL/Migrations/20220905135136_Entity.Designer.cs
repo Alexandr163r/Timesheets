@@ -12,8 +12,8 @@ using Timesheets.DAL;
 namespace Timesheets.DAL.Migrations
 {
     [DbContext(typeof(TimesheetsDbContext))]
-    [Migration("20220901133045_EntityCreate")]
-    partial class EntityCreate
+    [Migration("20220905135136_Entity")]
+    partial class Entity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -90,20 +90,24 @@ namespace Timesheets.DAL.Migrations
 
             modelBuilder.Entity("Timesheets.Domain.Entities.Employee", b =>
                 {
-                    b.HasOne("Timesheets.Domain.Entities.EmployeeType", null)
+                    b.HasOne("Timesheets.Domain.Entities.EmployeeType", "EmployeeType")
                         .WithMany("Employees")
                         .HasForeignKey("EmployeeTypeId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("EmployeeType");
                 });
 
             modelBuilder.Entity("Timesheets.Domain.Entities.TimeSheet", b =>
                 {
-                    b.HasOne("Timesheets.Domain.Entities.Employee", null)
+                    b.HasOne("Timesheets.Domain.Entities.Employee", "Employee")
                         .WithMany("TimeSheets")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("Timesheets.Domain.Entities.Employee", b =>
