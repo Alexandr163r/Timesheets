@@ -18,18 +18,19 @@ public class TimesheetsDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Employee>()
-            .HasOne("Timesheets.Domain.Entities.EmployeeType", null)
-            .WithMany("Employees")
-            .HasForeignKey("EmployeeTypeId")
-            .OnDelete(DeleteBehavior.NoAction)
-            .IsRequired();
+            .HasOne<EmployeeType>(employee => employee.EmployeeType)
+            .WithMany(employeeTypes => employeeTypes.Employees)
+            .HasForeignKey(employee => employee.EmployeeTypeId)
+            .OnDelete(deleteBehavior: DeleteBehavior.NoAction);
+            
         
         modelBuilder.Entity<TimeSheet>()
-            .HasOne("Timesheets.Domain.Entities.Employee", null)
-            .WithMany("TimeSheets")
-            .HasForeignKey("EmployeeId")
-            .OnDelete(DeleteBehavior.NoAction)
-            .IsRequired();
+            .HasOne<Employee>(timeSheet => timeSheet.Employee)
+            .WithMany(employee => employee.TimeSheets)
+            .HasForeignKey(timeSheets => timeSheets.EmployeeId)
+            .OnDelete(deleteBehavior: DeleteBehavior.NoAction);
+        
+        base.OnModelCreating(modelBuilder);
     }
 }
 
