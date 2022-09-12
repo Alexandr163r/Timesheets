@@ -25,11 +25,13 @@ public class TimeSheetRepository : ITimeSheetRepository
         return timeSheet;
     }
 
-    public async Task<bool> AddAsync(TimeSheet entity)
+    public async Task<TimeSheet> AddAsync(TimeSheet timeSheet)
     {
-        await _dbContext.TimeSheets.AddAsync(entity);
+        var newTimeSheet = await _dbContext.TimeSheets.AddAsync(timeSheet);
 
-        return true;
+        await _dbContext.SaveChangesAsync();
+        
+        return newTimeSheet.Entity;
     }
 
     public async Task<bool> DeleteAsync(Guid id)
@@ -40,27 +42,36 @@ public class TimeSheetRepository : ITimeSheetRepository
         {
             return false;
         }
-
+        
         _dbContext.TimeSheets.Remove(timeSheet);
-
+        
+        await _dbContext.SaveChangesAsync();
+        
         return true;
     }
 
-    public async Task<bool> UpdateAsync(Guid id, TimeSheet entity)
+    public async Task<bool> UpdateAsync(Guid id, TimeSheet timeSheet)
     {
-        var timeSheet = await _dbContext.TimeSheets.FindAsync(id);
+        var newTimeSheet = await _dbContext.TimeSheets.FindAsync(id);
 
-        if (timeSheet == null)
+        if (newTimeSheet == null)
         {
             return false;
         }
         
-        timeSheet.EndOfWorkDay = entity.EndOfWorkDay;
-        timeSheet.StartOfWorkDay = entity.StartOfWorkDay;
-        timeSheet.EmployeeId = entity.EmployeeId;
-        
-        await _dbContext.SaveChangesAsync();
+        newTimeSheet.EndOfWorkDay = timeSheet.EndOfWorkDay;
+        newTimeSheet.StartOfWorkDay = timeSheet.StartOfWorkDay;
+        newTimeSheet.EmployeeId = timeSheet.EmployeeId;
 
+        await _dbContext.SaveChangesAsync();
+        
         return true;
+    }
+    
+    public async Task<bool> TimeSheetExistByIdAsync(Guid id)
+    {
+        var existId = await _dbContext.TimeSheets.AnyAsync(e => e.Id == id);
+
+        return existId;
     }
 }

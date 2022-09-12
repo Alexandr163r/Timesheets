@@ -1,8 +1,9 @@
-namespace Timesheets.Domain.Entities;
+namespace Timesheets.Presentation.Models.TimeSheet;
 
-// ReSharper disable once ClassNeverInstantiated.Global
-public class TimeSheet : BaseId
+public class TimeSheetRequestModel
 {
+    public Guid Id { get; set; }
+    
     public DateTime StartOfWorkDay { get; set; }
 
     public DateTime EndOfWorkDay { get; set; }
@@ -10,6 +11,4 @@ public class TimeSheet : BaseId
     public TimeSpan WorkingTime { get; set; }
 
     public Guid EmployeeId { get; set; }
-
-    public virtual Employee Employee { get; set; }
 }
