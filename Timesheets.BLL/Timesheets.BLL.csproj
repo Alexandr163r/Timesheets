@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Timesheets.DAL\Timesheets.DAL.csproj" />
+      <ProjectReference Include="..\Timesheets.Domain\Timesheets.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
