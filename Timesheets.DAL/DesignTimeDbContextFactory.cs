@@ -9,7 +9,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<Timesheets
 {
     TimesheetsDbContext IDesignTimeDbContextFactory<TimesheetsDbContext>.CreateDbContext(string[] args)
     {
-        IConfigurationRoot configuration = new ConfigurationBuilder()
+        var configuration = new ConfigurationBuilder()
             .SetBasePath(@"C:\GitHub\RiderProject\Timesheets\Timesheets.Presentation\")
             .AddJsonFile("appsettings.Development.json")
             .Build();

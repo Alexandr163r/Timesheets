@@ -25,39 +25,33 @@ public class EmployeeRepository : IEmployeeRepository
         return employee;
     }
 
-    public async Task<bool> AddAsync(Employee entity)
+    public async Task<Employee> AddAsync(Employee employee)
     {
-        await _dbContext.Employees.AddAsync(entity);
+        var newEmployee = await _dbContext.Employees.AddAsync(employee);
 
-        return true;
+        await _dbContext.SaveChangesAsync();
+
+        return newEmployee.Entity;
     }
 
     public async Task<bool> DeleteAsync(Guid id)
     {
-        var entity = await _dbContext.EmployeeTypes.FindAsync(id);
+        var employee = await _dbContext.Employees.FindAsync(id);
 
-        if (entity == null)
-        {
-            return false;
-        }
+        _dbContext.Employees.Remove(employee);
 
-        _dbContext.EmployeeTypes.Remove(entity);
+        await _dbContext.SaveChangesAsync();
 
         return true;
     }
-    
-    public async Task<bool> UpdateAsync(Guid id, Employee entity)
+
+    public async Task<bool> UpdateAsync(Guid id, Employee employee)
     {
-        var employee = await _dbContext.Employees.FindAsync(id);
-
-        if (employee == null)
-        {
-            return false;
-        }
-
-        employee.Name = employee.Name;
-        employee.Surname = employee.Surname;
-        employee.EmployeeTypeId = employee.EmployeeTypeId;
+        var newEmployee = await _dbContext.Employees.FindAsync(id);
+        
+        newEmployee.Name = employee.Name;
+        newEmployee.Surname = employee.Surname;
+        newEmployee.EmployeeTypeId = employee.EmployeeTypeId;
 
         await _dbContext.SaveChangesAsync();
 
@@ -70,5 +64,22 @@ public class EmployeeRepository : IEmployeeRepository
 
         return employee;
     }
+
+    public async Task<bool> EmployeeExistByIdAsync(Guid id)
+    {
+        var existId = await _dbContext.Employees.AnyAsync(e => e.Id == id);
+
+        return existId;
+    }
+
+    public async Task<bool> AddTimeSheetToEmployeeAsync(Guid id, TimeSheet timeSheet)
+    {
+        var employee = await _dbContext.Employees.FirstAsync(e => e.Id == id);
+        
+        employee.TimeSheets.Add(timeSheet);
+
+        await _dbContext.SaveChangesAsync();
+
+        return true;
+    }
 }
-    
