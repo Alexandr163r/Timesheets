@@ -1,6 +1,8 @@
+using Timesheets.Domain.Entities;
+
 namespace Timesheets.Domain.Dto;
 
-public class ReportDto
+public class ReportDto : BaseId
 {
     public string Title { get; set; } = string.Empty;
     
