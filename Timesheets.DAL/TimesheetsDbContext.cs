@@ -15,7 +15,7 @@ public class TimesheetsDbContext : DbContext
 
     public DbSet<TimeSheet> TimeSheets { get; set; }
     
-    public DbSet<ReportInfo> ReportsInfo { get; set; }
+    public DbSet<Report> Reports { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

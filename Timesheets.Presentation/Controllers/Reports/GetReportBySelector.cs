@@ -1,6 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Timesheets.Domain.Dto;
+using Timesheets.Domain.Entities;
 using Timesheets.Domain.Interfaces;
 using Timesheets.Presentation.Models.Report;
 
@@ -21,7 +21,7 @@ public class GetReportBySelector : ReportsBase
     [HttpPost("[area]/")]
     public async Task<IActionResult> GetBySelector([FromBody] ReportResponseModel model)
     {
-        var report = _mapper.Map<ReportDto>(model);
+        var report = _mapper.Map<ReportCard>(model);
         
         var reports = await _service.GetReportBySelectorAsync(report);
         

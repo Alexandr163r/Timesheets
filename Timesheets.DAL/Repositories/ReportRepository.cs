@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Timesheets.Domain.Dto;
+using Timesheets.Domain.Entities;
 using Timesheets.Domain.Interfaces;
 
 namespace Timesheets.DAL.Repositories;
@@ -13,13 +13,13 @@ public class ReportRepository : IReportRepository
         _dbContext = dbContext;
     }
 
-    public async Task<List<ReportDto>> GetReportByIdAsync(Guid id)
+    public async Task<List<ReportCard>> GetReportByIdAsync(Guid id)
     {
         var reports = await (from employee in _dbContext.Employees 
                 join employeeType in _dbContext.EmployeeTypes on employee.EmployeeTypeId equals employeeType.Id
                 join timeSheet in _dbContext.TimeSheets on employee.Id equals timeSheet.EmployeeId
                 where employee.Id == id
-                select new ReportDto()
+                select new ReportCard()
                 {
                     Name = employee.Name,
                     Surname = employee.Surname,
@@ -33,7 +33,7 @@ public class ReportRepository : IReportRepository
         return reports;
     }
 
-    public async Task<List<ReportDto>> GetReportBySelectorAsync(ReportDto reportDto)
+    public async Task<List<ReportCard>> GetReportBySelectorAsync(ReportCard reportDto)
     {
         var reports = await (from employee in _dbContext.Employees 
                 join employeeType in _dbContext.EmployeeTypes on employee.EmployeeTypeId equals employeeType.Id
@@ -42,7 +42,7 @@ public class ReportRepository : IReportRepository
                       && (timeSheet.EndOfWorkDay >= reportDto.StartOfWorkDay) 
                       && (reportDto.Name == null || (employee.Name == reportDto.Name))
                       && (reportDto.Surname == null || employee.Surname == reportDto.Surname)
-                select new ReportDto()
+                select new ReportCard()
                 {
                     Name = employee.Name,
                     Surname = employee.Surname,

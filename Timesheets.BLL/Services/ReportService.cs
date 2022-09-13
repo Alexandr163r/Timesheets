@@ -1,4 +1,4 @@
-using Timesheets.Domain.Dto;
+using Timesheets.Domain.Entities;
 using Timesheets.Domain.Interfaces;
 
 namespace Timesheets.BLL.Services;
@@ -12,16 +12,16 @@ public class ReportService : IReportService
         _repository = repository;
     }
 
-    public async Task<List<ReportDto>> GetReportByIdAsync(Guid id)
+    public async Task<List<ReportCard>> GetReportByIdAsync(Guid id)
     {
         var reports = await _repository.GetReportByIdAsync(id);
 
         return reports;
     }
 
-    public async Task<List<ReportDto>> GetReportBySelectorAsync(ReportDto reportDto)
+    public async Task<List<ReportCard>> GetReportBySelectorAsync(ReportCard reportCard)
     {
-        var reports = await _repository.GetReportBySelectorAsync(reportDto);
+        var reports = await _repository.GetReportBySelectorAsync(reportCard);
 
         return reports;
     }

@@ -22,43 +22,6 @@ namespace Timesheets.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Timesheets.Domain.Dto.ReportDto", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("EndOfWorkDay")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("ReportInfoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("StartOfWorkDay")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<TimeSpan>("WorkTime")
-                        .HasColumnType("time");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReportInfoId");
-
-                    b.ToTable("ReportDto");
-                });
-
             modelBuilder.Entity("Timesheets.Domain.Entities.Employee", b =>
                 {
                     b.Property<Guid>("Id")
@@ -98,7 +61,7 @@ namespace Timesheets.DAL.Migrations
                     b.ToTable("EmployeeTypes");
                 });
 
-            modelBuilder.Entity("Timesheets.Domain.Entities.ReportInfo", b =>
+            modelBuilder.Entity("Timesheets.Domain.Entities.Report", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -112,7 +75,44 @@ namespace Timesheets.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ReportsInfo");
+                    b.ToTable("Reports");
+                });
+
+            modelBuilder.Entity("Timesheets.Domain.Entities.ReportCard", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EndOfWorkDay")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ReportId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("StartOfWorkDay")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan>("WorkTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportId");
+
+                    b.ToTable("ReportCard");
                 });
 
             modelBuilder.Entity("Timesheets.Domain.Entities.TimeSheet", b =>
@@ -140,13 +140,6 @@ namespace Timesheets.DAL.Migrations
                     b.ToTable("TimeSheets");
                 });
 
-            modelBuilder.Entity("Timesheets.Domain.Dto.ReportDto", b =>
-                {
-                    b.HasOne("Timesheets.Domain.Entities.ReportInfo", null)
-                        .WithMany("Reports")
-                        .HasForeignKey("ReportInfoId");
-                });
-
             modelBuilder.Entity("Timesheets.Domain.Entities.Employee", b =>
                 {
                     b.HasOne("Timesheets.Domain.Entities.EmployeeType", "EmployeeType")
@@ -156,6 +149,13 @@ namespace Timesheets.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("EmployeeType");
+                });
+
+            modelBuilder.Entity("Timesheets.Domain.Entities.ReportCard", b =>
+                {
+                    b.HasOne("Timesheets.Domain.Entities.Report", null)
+                        .WithMany("Reports")
+                        .HasForeignKey("ReportId");
                 });
 
             modelBuilder.Entity("Timesheets.Domain.Entities.TimeSheet", b =>
@@ -179,7 +179,7 @@ namespace Timesheets.DAL.Migrations
                     b.Navigation("Employees");
                 });
 
-            modelBuilder.Entity("Timesheets.Domain.Entities.ReportInfo", b =>
+            modelBuilder.Entity("Timesheets.Domain.Entities.Report", b =>
                 {
                     b.Navigation("Reports");
                 });
