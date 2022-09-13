@@ -1,6 +1,6 @@
-namespace Timesheets.Presentation.Models.Report;
+namespace Timesheets.Presentation.Models.ReportCard;
 
-public class ReportRequestModel
+public class ReportCardRequestModel
 {
     public string Title { get; set; } = string.Empty;
     

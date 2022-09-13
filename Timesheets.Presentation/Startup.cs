@@ -36,11 +36,8 @@ public class Startup
         services.AddScoped<IEmployeeServiceValidator, EmployeeServiceValidator>();
         services.AddScoped<ITimeSheetServiceValidator, TimeSheetServiceValidator>();
         
-        services.Configure<DBConnectionStringsSetting>(
-            Configuration.GetSection("DBConnectionStrings"));
-        
-        services.AddDbContext<TimesheetsDbContext>(options =>
-            options.UseSqlServer(Configuration.GetSection("DBConnectionStrings")["MSSQLConnection"]));
+        services.Configure<MSSQLDBSetting>(
+            Configuration.GetSection(nameof(MSSQLDBSetting)));
         
         services.AddControllers().AddJsonOptions(options =>
         {
@@ -50,15 +47,20 @@ public class Startup
         services.AddEndpointsApiExplorer();
         
         services.AddSwaggerGen();
+
+        var dbSettings = Configuration.GetSection(nameof(MSSQLDBSetting)).Get<MSSQLDBSetting>();
+        
+        services.AddDbContext<TimesheetsDbContext>(options =>
+            options.UseSqlServer(dbSettings.ConnectionStrings));
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        {
-            app.UseSwagger();
-
-            app.UseSwaggerUI();
-        }
+        // {
+        //     app.UseSwagger();
+        //
+        //     app.UseSwaggerUI();
+        // }
 
         app.UseRouting();
 

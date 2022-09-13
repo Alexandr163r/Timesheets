@@ -2,7 +2,7 @@ using AutoMapper;
 using Timesheets.Domain.Entities;
 using Timesheets.Presentation.Models.Employee;
 using Timesheets.Presentation.Models.EmployeeType;
-using Timesheets.Presentation.Models.Report;
+using Timesheets.Presentation.Models.ReportCard;
 using Timesheets.Presentation.Models.TimeSheet;
 
 namespace Timesheets.Presentation;
@@ -23,8 +23,8 @@ public class AppMappingProfile : Profile
         
         CreateMap<TimeSheet, TimeSheetResponseModel>().ReverseMap();
         
-        CreateMap<ReportCard, ReportRequestModel>().ReverseMap();
+        CreateMap<ReportCard, ReportCardRequestModel>().ReverseMap();
         
-        CreateMap<ReportCard, ReportResponseModel>().ReverseMap();
+        CreateMap<ReportCard, ReportCardResponseModel>().ReverseMap();
     }
 }

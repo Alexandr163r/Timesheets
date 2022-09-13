@@ -13,9 +13,9 @@ public class ReportRepository : IReportRepository
         _dbContext = dbContext;
     }
 
-    public async Task<List<ReportCard>> GetReportByIdAsync(Guid id)
+    public async Task<List<ReportCard>> GetReportCardByIdAsync(Guid id)
     {
-        var reports = await (from employee in _dbContext.Employees 
+        var reports = await (from employee in _dbContext.Employees
                 join employeeType in _dbContext.EmployeeTypes on employee.EmployeeTypeId equals employeeType.Id
                 join timeSheet in _dbContext.TimeSheets on employee.Id equals timeSheet.EmployeeId
                 where employee.Id == id
@@ -33,13 +33,13 @@ public class ReportRepository : IReportRepository
         return reports;
     }
 
-    public async Task<List<ReportCard>> GetReportBySelectorAsync(ReportCard reportDto)
+    public async Task<List<ReportCard>> GetReportCardBySelectorAsync(ReportCard reportDto)
     {
-        var reports = await (from employee in _dbContext.Employees 
+        var reports = await (from employee in _dbContext.Employees
                 join employeeType in _dbContext.EmployeeTypes on employee.EmployeeTypeId equals employeeType.Id
                 join timeSheet in _dbContext.TimeSheets on employee.Id equals timeSheet.EmployeeId
-                where (timeSheet.StartOfWorkDay <= reportDto.EndOfWorkDay) 
-                      && (timeSheet.EndOfWorkDay >= reportDto.StartOfWorkDay) 
+                where (timeSheet.StartOfWorkDay <= reportDto.EndOfWorkDay)
+                      && (timeSheet.EndOfWorkDay >= reportDto.StartOfWorkDay)
                       && (reportDto.Name == null || (employee.Name == reportDto.Name))
                       && (reportDto.Surname == null || employee.Surname == reportDto.Surname)
                 select new ReportCard()
@@ -55,6 +55,47 @@ public class ReportRepository : IReportRepository
 
         return reports;
     }
+
+    public async Task<Guid> CreateReportAsync(List<ReportCard> reportCards)
+    {
+        var report = new Report();
+
+        report.Reports = reportCards;
+
+        await _dbContext.Reports.AddAsync(report);
+
+        await _dbContext.SaveChangesAsync();
+
+        return report.Id;
+    }
+
+    public async Task IsDeleteReportAsync(Report report)
+    {
+        report.IsDeleted = true;
+
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task IsDownloadedReportAsync(Report report)
+    {
+        report.IsDawnloaded = true;
+
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<Report> GetByIdAsync(Guid id)
+    {
+        var report = await _dbContext.Reports.Include(r => r.Reports)
+            .Where(r => r.Id == id)
+            .FirstOrDefaultAsync();
+
+        return report;
+    }
+
+    public async Task<bool> ExistByIdAsync(Guid id)
+    {
+        var exist = await _dbContext.Reports.AnyAsync(r => r.Id == id);
+
+        return exist;
+    }
 }
-
-

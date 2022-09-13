@@ -12,17 +12,45 @@ public class ReportService : IReportService
         _repository = repository;
     }
 
-    public async Task<List<ReportCard>> GetReportByIdAsync(Guid id)
+    public async Task<Guid> CreateReportByEmployeeId(Guid id)
     {
-        var reports = await _repository.GetReportByIdAsync(id);
+        var reportCards = await _repository.GetReportCardByIdAsync(id);
 
-        return reports;
+        var report = await _repository.CreateReportAsync(reportCards);
+        
+        return report;
     }
 
-    public async Task<List<ReportCard>> GetReportBySelectorAsync(ReportCard reportCard)
+    public async Task<Guid> CreateReportBySelectorAsync(ReportCard reportCard)
     {
-        var reports = await _repository.GetReportBySelectorAsync(reportCard);
+        var reportCards = await _repository.GetReportCardBySelectorAsync(reportCard);
 
-        return reports;
+        var report = await _repository.CreateReportAsync(reportCards);
+        
+        return report;
+    }
+
+    public async Task IsDeleteReportAsync(Report report)
+    {
+        await _repository.IsDeleteReportAsync(report);
+    }
+
+    public async Task IsDownloadedReportAsync(Report report)
+    {
+        await _repository.IsDownloadedReportAsync(report);
+    }
+
+    public async Task<Report> GetByIdAsync(Guid id)
+    {
+        var report = await _repository.GetByIdAsync(id);
+
+        return report;
+    }
+
+    public async Task<bool> ExistByIdAsync(Guid id)
+    {
+        var exist = await _repository.ExistByIdAsync(id);
+
+        return exist;
     }
 }
