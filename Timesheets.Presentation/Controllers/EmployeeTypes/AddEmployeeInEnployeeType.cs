@@ -25,7 +25,7 @@ public class AddEmployeeInEnployeeType : EmployeeTypeBase
     }
 
 
-    [HttpPost("[area]/Add_Employee")]
+    [HttpPost("[area]/Add_Employee/{title}")]
     public async Task<IActionResult> AddEmployeeIn([FromBody] EmployeeResponseModel responseModel, string title)
     {
         var isValidTitle = await _employeeTypeServiceValidator.IsValidTitleAsync(title);

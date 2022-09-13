@@ -21,7 +21,7 @@ public class UpdateEmployeeType : EmployeeTypeBase
         _validator = validator;
     }
 
-    [HttpPut("[area]{id:guid}")]
+    [HttpPut("[area]/{id:guid}")]
     public async Task<IActionResult> Update([FromBody] EmployeeTypeResponseModel responseModel, Guid id)
     {
         var isvalidId = await _validator.IsValidIdAsync(id);

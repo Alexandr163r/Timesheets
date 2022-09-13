@@ -22,7 +22,7 @@ public class AddTimeSheetToEnployee : EmployeeBase
         _employeeServiceValidator = employeeServiceValidator;
     }
 
-    [HttpPost("[area]/Add_TimeSheet{id:guid}")]
+    [HttpPost("[area]/Add_TimeSheet/{id:guid}")]
     public async Task<IActionResult> AddEmployeeIn([FromBody] TimeSheetResponseModel responseModel, Guid id)
     {
         var isValidId = await _employeeServiceValidator.IsValidIdAsync(id);

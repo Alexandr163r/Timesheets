@@ -18,4 +18,11 @@ public class ReportService : IReportService
 
         return reports;
     }
+
+    public async Task<List<ReportDto>> GetReportBySelectorAsync(ReportDto reportDto)
+    {
+        var reports = await _repository.GetReportBySelectorAsync(reportDto);
+
+        return reports;
+    }
 }

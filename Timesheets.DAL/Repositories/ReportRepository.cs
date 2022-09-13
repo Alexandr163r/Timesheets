@@ -32,4 +32,29 @@ public class ReportRepository : IReportRepository
 
         return reports;
     }
+
+    public async Task<List<ReportDto>> GetReportBySelectorAsync(ReportDto reportDto)
+    {
+        var reports = await (from employee in _dbContext.Employees 
+                join employeeType in _dbContext.EmployeeTypes on employee.EmployeeTypeId equals employeeType.Id
+                join timeSheet in _dbContext.TimeSheets on employee.Id equals timeSheet.EmployeeId
+                where (timeSheet.StartOfWorkDay <= reportDto.EndOfWorkDay) 
+                      && (timeSheet.EndOfWorkDay >= reportDto.StartOfWorkDay) 
+                      && (reportDto.Name == null || (employee.Name == reportDto.Name))
+                      && (reportDto.Surname == null || employee.Surname == reportDto.Surname)
+                select new ReportDto()
+                {
+                    Name = employee.Name,
+                    Surname = employee.Surname,
+                    Title = employeeType.Title,
+                    StartOfWorkDay = timeSheet.StartOfWorkDay,
+                    EndOfWorkDay = timeSheet.EndOfWorkDay,
+                    WorkTime = timeSheet.WorkingTime
+                }
+            ).ToListAsync();
+
+        return reports;
+    }
 }
+
+
