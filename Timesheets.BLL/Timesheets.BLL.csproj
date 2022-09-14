@@ -11,4 +11,8 @@
       <ProjectReference Include="..\Timesheets.Domain\Timesheets.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="ClosedXML" Version="0.96.0" />
+    </ItemGroup>
+
 </Project>

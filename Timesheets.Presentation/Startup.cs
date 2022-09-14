@@ -31,7 +31,8 @@ public class Startup
         services.AddScoped<IEmployeeService, EmployeeService>();
         services.AddScoped<ITimeSheetService, TimeSheetService>();
         services.AddScoped<IReportService, ReportService>();
-        
+        services.AddScoped<IGenerateExcelService, GenerateExcelService>();
+       
         services.AddScoped<IEmployeeTypeServiceValidator, EmployeeTypeServiceValidator>();
         services.AddScoped<IEmployeeServiceValidator, EmployeeServiceValidator>();
         services.AddScoped<ITimeSheetServiceValidator, TimeSheetServiceValidator>();
@@ -56,11 +57,11 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        // {
-        //     app.UseSwagger();
-        //
-        //     app.UseSwaggerUI();
-        // }
+        {
+            app.UseSwagger();
+        
+            app.UseSwaggerUI();
+        }
 
         app.UseRouting();
 
