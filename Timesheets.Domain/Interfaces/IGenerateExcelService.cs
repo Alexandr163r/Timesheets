@@ -4,5 +4,5 @@ namespace Timesheets.Domain.Interfaces;
 
 public interface IGenerateExcelService
 {
-    public Task<MemoryStream> ConvertToExcelAsync(List<ReportCard> reportCards);
+    public Task<byte[]> ConvertToExcelAsync(List<ReportCard> reportCards);
 }

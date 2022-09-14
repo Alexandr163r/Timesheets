@@ -5,20 +5,20 @@ using Timesheets.Presentation.Models.ReportCard;
 
 namespace Timesheets.Presentation.Controllers.Reports;
 
-public class GetReportById : ReportsBase
+public class GetReportByIdJson : ReportsBase
 {
     private readonly IReportService _service;
 
     private readonly IMapper _mapper; 
     
 
-    public GetReportById(IReportService service, IMapper mapper)
+    public GetReportByIdJson(IReportService service, IMapper mapper)
     {
         _service = service;
         _mapper = mapper;
     }
 
-    [HttpGet("[area]/{id:guid}/report")]
+    [HttpGet("[area]/{id:guid}/Json")]
     public async Task<IActionResult> GetRepoerById(Guid id)
     {
         var report = await _service.GetByIdAsync(id);

@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 
 namespace Timesheets.DAL;
 
@@ -15,7 +14,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<Timesheets
             .Build();
 
         var builder = new DbContextOptionsBuilder<TimesheetsDbContext>();
-        var connectionString = configuration.GetSection("DBConnectionStrings")["MSSQLConnection"];
+        var connectionString = configuration.GetSection("MSSQLDBSetting")["ConnectionStrings"];
 
         builder.UseSqlServer(connectionString);
 

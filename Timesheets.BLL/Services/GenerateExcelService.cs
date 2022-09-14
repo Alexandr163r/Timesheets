@@ -6,7 +6,7 @@ namespace Timesheets.BLL.Services;
 
 public class GenerateExcelService : IGenerateExcelService
 {
-    public async Task<MemoryStream> ConvertToExcelAsync(List<ReportCard> reportCards)
+    public async Task<byte[]> ConvertToExcelAsync(List<ReportCard> reportCards)
     {
         using (var reportWorkbook = new XLWorkbook())
         {
@@ -47,7 +47,7 @@ public class GenerateExcelService : IGenerateExcelService
             {
                 reportWorkbook.SaveAs(stream);
 
-                return stream;
+                return stream.ToArray();
             }
         }
     }
