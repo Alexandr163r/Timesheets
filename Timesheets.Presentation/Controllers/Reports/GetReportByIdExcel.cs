@@ -16,7 +16,7 @@ public class GetReportByIdExcel : ReportsBase
         _excelService = excelService;
     }
 
-    [HttpGet("[area]/{id:guid}/Excel")]
+    [HttpGet("[area]/Excel/{id:guid}")]
     public async Task<IActionResult> GetRepoerById(Guid id)
     {
         var report = await _reportService.GetByIdAsync(id);

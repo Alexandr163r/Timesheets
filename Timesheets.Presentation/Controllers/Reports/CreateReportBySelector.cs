@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Timesheets.Domain.Entities;
 using Timesheets.Domain.Interfaces;
+using Timesheets.Presentation.Models.Report;
 using Timesheets.Presentation.Models.ReportCard;
 
 namespace Timesheets.Presentation.Controllers.Reports;
@@ -25,6 +26,13 @@ public class CreateReportBySelector : ReportsBase
         
         var reportId = await _service.CreateReportBySelectorAsync(reportCard);
         
-        return Ok(reportId.ToString()); 
+        var response = new LinkReportModel()
+        {
+            Json = $"http://localhost:5000/Report/Json/{reportId}",
+            
+            Excel = $"http://localhost:5000/Report/Excel/{reportId}"
+        };
+
+        return Ok(response);
     }
 }

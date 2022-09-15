@@ -18,7 +18,7 @@ public class GetReportByIdJson : ReportsBase
         _mapper = mapper;
     }
 
-    [HttpGet("[area]/{id:guid}/Json")]
+    [HttpGet("[area]/Json/{id:guid}")]
     public async Task<IActionResult> GetRepoerById(Guid id)
     {
         var report = await _service.GetByIdAsync(id);
