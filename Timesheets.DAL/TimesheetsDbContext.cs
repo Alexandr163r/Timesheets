@@ -3,7 +3,7 @@ using Timesheets.Domain.Entities;
 
 namespace Timesheets.DAL;
 
-public class TimesheetsDbContext : DbContext
+public class TimesheetsDbContext : DbContext 
 {
     public TimesheetsDbContext(DbContextOptions<TimesheetsDbContext> options) : base(options)
     {

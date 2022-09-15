@@ -5,6 +5,8 @@ using Timesheets.DAL.Repositories;
 using Timesheets.DAL.Settings;
 using Timesheets.Domain.Interfaces;
 using Timesheets.Presentation.Converter;
+using Timesheets.Presentation.Extensions;
+using Timesheets.Presentation.Settings;
 
 namespace Timesheets.Presentation;
 
@@ -21,6 +23,12 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddAutoMapper(typeof(AppMappingProfile));
+        
+        services.AddAuthentication(options => { options.DefaultScheme = "Bearer"; });
+        
+        services.AddJWT(Configuration);
+        
+        services.Configure<JWTSetting>(this.Configuration.GetSection(nameof(JWTSetting)));
         
         services.AddScoped<IEmployeeTypeRepository, EmployeeTypeRepository>();
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
