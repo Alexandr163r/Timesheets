@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Timesheets.DAL.Entity;
 using Timesheets.Domain.Entities;
 
 namespace Timesheets.DAL;
 
-public class TimesheetsDbContext : DbContext 
+public class TimesheetsDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
 {
     public TimesheetsDbContext(DbContextOptions<TimesheetsDbContext> options) : base(options)
     {

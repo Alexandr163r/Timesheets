@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Timesheets.BLL.Services;
 using Timesheets.DAL;
+using Timesheets.DAL.Entity;
 using Timesheets.DAL.Repositories;
 using Timesheets.DAL.Settings;
 using Timesheets.Domain.Interfaces;
@@ -60,7 +61,7 @@ public class Startup
         var dbSettings = Configuration.GetSection(nameof(MSSQLDBSetting)).Get<MSSQLDBSetting>();
         
         services.AddDbContext<TimesheetsDbContext>(options =>
-            options.UseSqlServer(dbSettings.ConnectionStrings));
+            options.UseSqlServer(dbSettings.ConnectionStrings)).AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<TimesheetsDbContext>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
