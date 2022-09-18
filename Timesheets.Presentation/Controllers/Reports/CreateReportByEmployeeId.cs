@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Timesheets.Domain.Interfaces;
 using Timesheets.Presentation.Models.Report;
@@ -12,7 +13,8 @@ public class CreateReportByEmployeeId : ReportsBase
     {
         _service = service;
     }
-
+    
+    [Authorize(AuthenticationSchemes = "JWT_OR_COOKIE")]
     [HttpGet("[area]/{id:guid}")]
     public async Task<IActionResult> CreatebyEmployeeId(Guid id)
     {

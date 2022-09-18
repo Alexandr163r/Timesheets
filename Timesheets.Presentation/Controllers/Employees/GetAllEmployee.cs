@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Timesheets.Domain.Interfaces;
 using Timesheets.Presentation.Models.Employee;
@@ -16,7 +17,7 @@ public class GetAllEmployee : EmployeeBase
         _service = service;
         _mapper = mapper;
     }
-
+    
     [HttpGet("[area]/All")]
     public async Task<IActionResult> GetAll()
     {

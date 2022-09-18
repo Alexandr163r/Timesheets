@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Timesheets.Domain.Entities;
 using Timesheets.Domain.Interfaces;
@@ -18,7 +19,8 @@ public class CreateReportBySelector : ReportsBase
         _service = service;
         _mapper = mapper;
     }
-
+    
+    [Authorize(AuthenticationSchemes = "JWT_OR_COOKIE")]
     [HttpPost("[area]/")]
     public async Task<IActionResult> CreateBySelector([FromBody] ReportCardResponseModel model)
     {

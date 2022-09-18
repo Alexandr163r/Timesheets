@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 using Timesheets.BLL.Services;
 using Timesheets.DAL;
 using Timesheets.DAL.Entity;
@@ -25,7 +26,21 @@ public class Startup
     {
         services.AddAutoMapper(typeof(AppMappingProfile));
         
-        services.AddAuthentication(options => { options.DefaultScheme = "Bearer"; });
+        services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "Bearer";
+                options.DefaultChallengeScheme = "Identity.Application";
+            })
+            .AddPolicyScheme("JWT_OR_COOKIE", "JWT_OR_COOKIE", options =>
+            {
+                options.ForwardDefaultSelector = context =>
+                {
+                    string authorization = context.Request.Headers[HeaderNames.Authorization];
+                    if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer"))
+                        return "Bearer";
+                    return "Identity.Application";
+                };
+            });
         
         services.AddJWT(Configuration);
         
@@ -61,7 +76,7 @@ public class Startup
         var dbSettings = Configuration.GetSection(nameof(MSSQLDBSetting)).Get<MSSQLDBSetting>();
         
         services.AddDbContext<TimesheetsDbContext>(options =>
-            options.UseSqlServer(dbSettings.ConnectionStrings)).AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<TimesheetsDbContext>();
+            options.UseSqlServer(dbSettings.ConnectionStrings)).AddIdentity<ApplicationUser, ApplicationRole>(opt => opt.Password.RequireDigit = false).AddEntityFrameworkStores<TimesheetsDbContext>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
