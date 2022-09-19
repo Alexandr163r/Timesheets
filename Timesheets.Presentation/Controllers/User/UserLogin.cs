@@ -1,7 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -15,17 +14,14 @@ namespace Timesheets.Presentation.Controllers.User;
 
 public class UserLogin : UserBase
 {
-    private readonly IMapper _mapper;
-
     private readonly UserManager<ApplicationUser> _userManager;
 
     private readonly SignInManager<ApplicationUser> _signInManager;
 
     private readonly JWTSetting _jwtSetting;
 
-    public UserLogin(IMapper mapper, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<JWTSetting> jwtSetting)
+    public UserLogin(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<JWTSetting> jwtSetting)
     {
-        _mapper = mapper;
         _userManager = userManager;
         _signInManager = signInManager;
         _jwtSetting = jwtSetting.Value;

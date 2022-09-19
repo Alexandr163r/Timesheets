@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace Timesheets.Presentation.Models.TimeSheet;
 
 public class TimeSheetResponseModel

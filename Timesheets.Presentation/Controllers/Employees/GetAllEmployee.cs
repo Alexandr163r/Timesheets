@@ -1,5 +1,4 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Timesheets.Domain.Interfaces;
 using Timesheets.Presentation.Models.Employee;

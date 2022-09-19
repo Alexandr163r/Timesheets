@@ -39,7 +39,7 @@ public class AddEmployeeInEnployeeType : EmployeeTypeBase
 
         var isValidEmployee = await _employeeServiceValidator.IsValidCreateAsync(employee);
 
-        if (!isValidTitle)
+        if (!isValidEmployee)
         {
             return BadRequest("Форма работника не заполнина");
         }

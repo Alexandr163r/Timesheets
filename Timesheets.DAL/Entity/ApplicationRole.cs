@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Timesheets.DAL;
+namespace Timesheets.DAL.Entity;
 
 public class ApplicationRole : IdentityRole<Guid>
 {
-    
 }
