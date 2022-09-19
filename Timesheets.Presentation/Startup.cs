@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using Timesheets.BLL.Services;
@@ -60,6 +61,7 @@ public class Startup
         services.AddScoped<IEmployeeTypeServiceValidator, EmployeeTypeServiceValidator>();
         services.AddScoped<IEmployeeServiceValidator, EmployeeServiceValidator>();
         services.AddScoped<ITimeSheetServiceValidator, TimeSheetServiceValidator>();
+        services.AddScoped<IReportServiceValidator, ReportServiceValidator>();
         
         services.Configure<MSSQLDBSetting>(
             Configuration.GetSection(nameof(MSSQLDBSetting)));
