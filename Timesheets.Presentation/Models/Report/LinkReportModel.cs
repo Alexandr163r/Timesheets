@@ -2,7 +2,17 @@ namespace Timesheets.Presentation.Models.Report;
 
 public class LinkReportModel
 {
-    public string Json { get; set; } = string.Empty;
+    private readonly Guid _id;
 
-    public string Excel { get; set; } = string.Empty;
+    public LinkReportModel(Guid id)
+    {
+        _id = id;
+
+        Json = $"http://localhost:5000/Report/Json/{_id}";
+        Excel = $"http://localhost:5000/Report/Excel/{_id}";
+    }
+    
+    public string Json { get; }
+
+    public string Excel { get; }
 }

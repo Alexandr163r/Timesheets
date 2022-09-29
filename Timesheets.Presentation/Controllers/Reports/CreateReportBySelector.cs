@@ -28,12 +28,7 @@ public class CreateReportBySelector : ReportsBase
         
         var reportId = await _service.CreateReportBySelectorAsync(reportCard);
         
-        var response = new LinkReportModel()
-        {
-            Json = $"http://localhost:5000/Report/Json/{reportId}",
-            
-            Excel = $"http://localhost:5000/Report/Excel/{reportId}"
-        };
+        var response = new LinkReportModel(reportId);
 
         return Ok(response);
     }
