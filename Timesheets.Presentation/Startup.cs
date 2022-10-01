@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using Timesheets.BLL.Services;
@@ -26,6 +27,13 @@ public class Startup
     {
         services.AddAutoMapper(typeof(AppMappingProfile));
         
+        var dbSettings = Configuration.GetSection(nameof(MSSQLDBSetting)).Get<MSSQLDBSetting>();
+        
+        services.AddDbContext<TimesheetsDbContext>(options =>
+            options.UseSqlServer(dbSettings.ConnectionStrings)).AddIdentity<ApplicationUser, ApplicationRole>(opt => opt.Password.RequireDigit = false).AddEntityFrameworkStores<TimesheetsDbContext>().AddDefaultTokenProviders();
+        
+        services.AddJWT(Configuration);
+        
         services.AddAuthentication(options =>
             {
                 options.DefaultScheme = "Bearer";
@@ -41,9 +49,7 @@ public class Startup
                     return "Identity.Application";
                 };
             });
-        
-        services.AddJWT(Configuration);
-        
+
         services.Configure<JWTSetting>(this.Configuration.GetSection(nameof(JWTSetting)));
         
         services.AddScoped<IEmployeeTypeRepository, EmployeeTypeRepository>();
@@ -73,11 +79,6 @@ public class Startup
         services.AddEndpointsApiExplorer();
         
         services.AddSwaggerGen();
-
-        var dbSettings = Configuration.GetSection(nameof(MSSQLDBSetting)).Get<MSSQLDBSetting>();
-        
-        services.AddDbContext<TimesheetsDbContext>(options =>
-            options.UseSqlServer(dbSettings.ConnectionStrings)).AddIdentity<ApplicationUser, ApplicationRole>(opt => opt.Password.RequireDigit = false).AddEntityFrameworkStores<TimesheetsDbContext>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
