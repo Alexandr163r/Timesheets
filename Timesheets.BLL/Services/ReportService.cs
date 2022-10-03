@@ -15,7 +15,7 @@ public class ReportService : IReportService
     public async Task<Guid> CreateReportByEmployeeId(Guid id)
     {
         var reportCards = await _repository.GetReportCardByIdAsync(id);
-
+        
         var report = await _repository.CreateReportAsync(reportCards);
         
         return report;
@@ -43,7 +43,7 @@ public class ReportService : IReportService
     public async Task<Report> GetByIdAsync(Guid id)
     {
         var report = await _repository.GetByIdAsync(id);
-
+        
         return report;
     }
 

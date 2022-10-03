@@ -35,7 +35,7 @@ public class GetReportByIdJson : ReportsBase
         {
             var reportForAdmin = await _service.GetByIdAsync(id);
         
-            var responseForAdmin = _mapper.Map<List<ReportCardRequestModel>>(reportForAdmin.Reports);
+            var responseForAdmin = _mapper.Map<List<ReportCardRequestModel>>(reportForAdmin.Reports.OrderBy(r => r.StartOfWorkDay));
         
             return Ok(responseForAdmin);
         }
@@ -49,7 +49,7 @@ public class GetReportByIdJson : ReportsBase
             return Ok("Ссылка на отчет уже использовалась");
         }
         
-        var responseForEmployee = _mapper.Map<List<ReportCardRequestModel>>(reportForEmployee.Reports);
+        var responseForEmployee = _mapper.Map<List<ReportCardRequestModel>>(reportForEmployee.Reports.OrderBy(r => r.StartOfWorkDay));
 
         await _service.IsDeleteReportAsync(reportForEmployee);
 

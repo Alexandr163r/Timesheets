@@ -27,8 +27,10 @@ public class GenerateExcelService : IGenerateExcelService
             #endregion
 
             #region Body
-
-            foreach (var report in reportCards)
+            
+            var orderByDateReportCards = reportCards.OrderBy(r => r.StartOfWorkDay);
+            
+            foreach (var report in orderByDateReportCards)
             {
                 currentRow++;
                 worksheet.Cell(currentRow, 1).Value = report.Title;

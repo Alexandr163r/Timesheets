@@ -18,6 +18,7 @@ public class ReportRepository : IReportRepository
         var reports = await (from employee in _dbContext.Employees
                 join employeeType in _dbContext.EmployeeTypes on employee.EmployeeTypeId equals employeeType.Id
                 join timeSheet in _dbContext.TimeSheets on employee.Id equals timeSheet.EmployeeId
+                orderby timeSheet.StartOfWorkDay descending 
                 where employee.Id == id
                 select new ReportCard()
                 {
